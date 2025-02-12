@@ -4,3 +4,9 @@ langchain
 nltk
 bs4
 requests
+pyautogen>=0.2.0
+python-dotenv>=1.0.0
+reportlab>=4.0.8
+markdown>=3.5.2
+beautifulsoup4>=4.12.3
+autogen>=1.0.0

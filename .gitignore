@@ -22,3 +22,5 @@ changelog-instructions.md
 .streamlit
 secrets.toml
 .cursorrules
+OAI_CONFIG_LIST
+.cache

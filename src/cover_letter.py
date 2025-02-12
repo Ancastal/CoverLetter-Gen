@@ -12,7 +12,15 @@ import random
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-def get_profile_source(url='https://www.linkedin.com/in/antonio-castaldo/'):
+def get_profile_source(url: str = 'https://www.linkedin.com/in/antonio-castaldo/') -> str:
+    """Get the source code of a LinkedIn profile page
+    
+    Args:
+        url (str): The URL of the LinkedIn profile to scrape
+        
+    Returns:
+        str: The source code of the LinkedIn profile page
+    """
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
 
@@ -24,19 +32,25 @@ def get_profile_source(url='https://www.linkedin.com/in/antonio-castaldo/'):
 
     # Extract the page source or perform other actions with the browser
     source = driver.page_source
-
+    print(source)
+    with open("source.html", "w") as f:
+        f.write(source)
     # Close the browser
     driver.quit()
 
     return source
 
-def scrape_profile(source):
+def scrape_profile(source: str) -> user_persona.UserPersona:
     soup = BeautifulSoup(source, "html.parser")
     name = soup.find("title").text.strip().split('|')[0].split(',')[0].split('-')[0].strip()
+    print(name)
     skills = "Guess the skills from the rest of the information"
     certificates_list = get_certificates(soup, source)
+    print(certificates_list)
     educations_list = get_educations(soup, source)
+    print(educations_list)
     experiences_list = get_experiences(soup, source)
+    print(experiences_list)
     return user_persona.UserPersona(name, educations_list, experiences_list, skills, certificates_list)
 
 
@@ -115,8 +129,15 @@ def create_session_with_retries():
     
     return session
 
-def scrape_job_posting(url):
-    """Scrapes the job posting with improved error handling and anti-bot detection"""
+def scrape_job_posting(url: str) -> job_posting.JobPosting:
+    """Scrapes the job posting with improved error handling and anti-bot detection
+    
+    Args:
+        url (str): The URL of the job posting to scrape
+        
+    Returns:
+        job_posting.JobPosting: A JobPosting object containing the job title, company name, company location, job description, and salary information
+    """
     session = create_session_with_retries()
     
     # Add random delay before request
